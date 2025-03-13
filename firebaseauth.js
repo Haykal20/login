@@ -3,13 +3,9 @@ import {
     getAuth, 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
-    GoogleAuthProvider, 
-    FacebookAuthProvider, 
-    signInWithPopup, 
-    signOut,
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAiLrXUe1QVvtowLvy8A5esCShWpaUvqM4",
@@ -25,8 +21,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
-const googleProvider = new GoogleAuthProvider();
-const facebookProvider = new FacebookAuthProvider();
 
 function showMessage(message, divId) {
     const messageDiv = document.getElementById(divId);
@@ -117,81 +111,3 @@ recoverPassword.addEventListener('click', (event) => {
         showMessage('Please enter your email address.', 'signInMessage');
     }
 });
-
-// Sign In with Google
-const handleGoogleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
-    .then((result) => {
-        const user = result.user;
-        const userData = {
-            email: user.email,
-            firstName: user.displayName.split(' ')[0],
-            lastName: user.displayName.split(' ')[1] || ''
-        };
-        const docRef = doc(db, "users", user.uid);
-        getDoc(docRef)
-        .then((docSnap) => {
-            if (docSnap.exists()) {
-                showMessage('Account already exists!', 'signInMessage');
-            } else {
-                setDoc(docRef, userData)
-                .then(() => {
-                    localStorage.setItem('loggedInUserId', user.uid);
-                    window.location.href = 'homepage.html';
-                })
-                .catch((error) => {
-                    console.error("Error writing document", error);
-                });
-            }
-        });
-    })
-    .catch((error) => {
-        if (error.code === 'auth/account-exists-with-different-credential') {
-            showMessage('Account already exists with a different provider!', 'signInMessage');
-        } else {
-            showMessage('Error signing in with Google', 'signInMessage');
-        }
-    });
-};
-
-// Sign In with Facebook
-const handleFacebookSignIn = () => {
-    signInWithPopup(auth, facebookProvider)
-    .then((result) => {
-        const user = result.user;
-        const userData = {
-            email: user.email,
-            firstName: user.displayName.split(' ')[0],
-            lastName: user.displayName.split(' ')[1] || ''
-        };
-        const docRef = doc(db, "users", user.uid);
-        getDoc(docRef)
-        .then((docSnap) => {
-            if (docSnap.exists()) {
-                showMessage('Account already exists!', 'signInMessage');
-            } else {
-                setDoc(docRef, userData)
-                .then(() => {
-                    localStorage.setItem('loggedInUserId', user.uid);
-                    window.location.href = 'homepage.html';
-                })
-                .catch((error) => {
-                    console.error("Error writing document", error);
-                });
-            }
-        });
-    })
-    .catch((error) => {
-        if (error.code === 'auth/account-exists-with-different-credential') {
-            showMessage('Account already exists with a different provider!', 'signInMessage');
-        } else {
-            showMessage('Error signing in with Facebook', 'signInMessage');
-        }
-    });
-};
-
-// Attach Google and Facebook Sign In
-document.getElementById('googleSignIn').addEventListener('click', handleGoogleSignIn);
-document.getElementById('googleSignUp').addEventListener('click', handleGoogleSignIn);
-document.getElementById('facebookSignIn').addEventListener('click', handleFacebookSignIn);
-document.getElementById('facebookSignUp').addEventListener('click', handleFacebookSignIn);
