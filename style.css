@@ -16,8 +16,9 @@ body {
 
 .container {
     background: rgba(255, 255, 255, 0.9);
-    width: 400px;
-    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
@@ -163,5 +164,38 @@ button:hover {
     }
     100% {
         opacity: 0;
+    }
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+    }
+
+    input {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .links p, .links button {
+        font-size: 12px;
+    }
+
+    .recover a {
+        font-size: 12px;
     }
 }
