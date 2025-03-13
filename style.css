@@ -167,35 +167,75 @@ button:hover {
     }
 }
 
+/* Welcome Page Styles */
+.welcome-container {
+    background: rgba(255, 255, 255, 0.9);
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.welcome-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.user-info {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.user-info p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.user-info strong {
+    color: #667eea;
+}
+
+#logout {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#logout:hover {
+    background: #5a6fd1;
+}
+
 /* Responsive Design for Mobile */
 @media (max-width: 480px) {
     body {
         padding: 20px;
     }
 
-    .container {
+    .container, .welcome-container {
         width: 100%;
         padding: 1rem;
     }
 
-    .form-title {
+    .form-title, .welcome-container h1 {
         font-size: 1.5rem;
     }
 
-    input {
+    input, button {
         font-size: 14px;
     }
 
-    button {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .links p, .links button {
-        font-size: 12px;
-    }
-
-    .recover a {
+    .links p, .links button, .recover a {
         font-size: 12px;
     }
 }

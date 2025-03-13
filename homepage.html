@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Welcome</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="homepage.js"></script>
 </head>
 <body>
-    <h1>Welcome to the Homepage</h1>
-    <div>First Name: <span id="loggedUserFName"></span></div>
-    <div>Last Name: <span id="loggedUserLName"></span></div>
-    <div>Email: <span id="loggedUserEmail"></span></div>
-    <button id="logout">Logout</button>
+    <div class="welcome-container">
+        <h1>Welcome to the Homepage</h1>
+        <div class="user-info">
+            <p><strong>First Name:</strong> <span id="loggedUserFName"></span></p>
+            <p><strong>Last Name:</strong> <span id="loggedUserLName"></span></p>
+            <p><strong>Email:</strong> <span id="loggedUserEmail"></span></p>
+        </div>
+        <button id="logout">Logout</button>
+    </div>
 </body>
 </html>
