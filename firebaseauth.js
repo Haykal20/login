@@ -4,14 +4,14 @@ import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10
 
 // Konfigurasi Firebase dari environment variables
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
+    apiKey: "AIzaSyAiLrXUe1QVvtowLvy8A5esCShWpaUvqM4",
+    authDomain: "haykalfs2005.firebaseapp.com",
+    projectId: "haykalfs2005",
+    storageBucket: "haykalfs2005.firebasestorage.app",
+    messagingSenderId: "794208445982",
+    appId: "1:794208445982:web:67584fa93d8dce8e9df00f",
+    measurementId: "G-FC128Q5501"
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
