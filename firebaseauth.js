@@ -1,86 +1,197 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    GoogleAuthProvider, 
+    FacebookAuthProvider, 
+    signInWithPopup, 
+    signOut,
+    sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
-// Konfigurasi Firebase dari environment variables
-const _0x3542e2=_0x5467;(function(_0x5840a4,_0x22b4c2){const _0x5b84ac=_0x5467,_0x52bdd3=_0x5840a4();while(!![]){try{const _0x108078=-parseInt(_0x5b84ac(0x1ff))/0x1*(-parseInt(_0x5b84ac(0x1f6))/0x2)+-parseInt(_0x5b84ac(0x1fd))/0x3*(-parseInt(_0x5b84ac(0x1f4))/0x4)+parseInt(_0x5b84ac(0x1fe))/0x5+-parseInt(_0x5b84ac(0x202))/0x6*(-parseInt(_0x5b84ac(0x1f9))/0x7)+parseInt(_0x5b84ac(0x203))/0x8*(parseInt(_0x5b84ac(0x201))/0x9)+-parseInt(_0x5b84ac(0x1fc))/0xa*(-parseInt(_0x5b84ac(0x1fa))/0xb)+-parseInt(_0x5b84ac(0x1f7))/0xc*(parseInt(_0x5b84ac(0x1f8))/0xd);if(_0x108078===_0x22b4c2)break;else _0x52bdd3['push'](_0x52bdd3['shift']());}catch(_0x5a39b5){_0x52bdd3['push'](_0x52bdd3['shift']());}}}(_0x19ca,0xdfbe7));function _0x5467(_0x33254f,_0x3fc220){const _0x19ca76=_0x19ca();return _0x5467=function(_0x5467b7,_0x383e2e){_0x5467b7=_0x5467b7-0x1f3;let _0x39717a=_0x19ca76[_0x5467b7];return _0x39717a;},_0x5467(_0x33254f,_0x3fc220);}function _0x19ca(){const _0x10e165=['794208445982','22cfgkuD','36487020jAbhii','13VKooFO','35xXXrxT','3099041BwUSoN','AIzaSyAiLrXUe1QVvtowLvy8A5esCShWpaUvqM4','10EDUWiA','3wByDnQ','1294890FWsZcq','14021pwlift','haykalfs2005.firebasestorage.app','99wsqKLW','1559274OKfvrP','428560JQILEk','1:794208445982:web:67584fa93d8dce8e9df00f','haykalfs2005','5493740zQBKls'];_0x19ca=function(){return _0x10e165;};return _0x19ca();}const firebaseConfig={'apiKey':_0x3542e2(0x1fb),'authDomain':'haykalfs2005.firebaseapp.com','projectId':_0x3542e2(0x1f3),'storageBucket':_0x3542e2(0x200),'messagingSenderId':_0x3542e2(0x1f5),'appId':_0x3542e2(0x204),'measurementId':'G-FC128Q5501'};
+const firebaseConfig = {
+    apiKey: "AIzaSyAiLrXUe1QVvtowLvy8A5esCShWpaUvqM4",
+    authDomain: "haykalfs2005.firebaseapp.com",
+    projectId: "haykalfs2005",
+    storageBucket: "haykalfs2005.appspot.com",
+    messagingSenderId: "794208445982",
+    appId: "1:794208445982:web:67584fa93d8dce8e9df00f",
+    measurementId: "G-FC128Q5501"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
-// Fungsi dan kode lainnya tetap sama...
+function showMessage(message, divId) {
+    const messageDiv = document.getElementById(divId);
+    messageDiv.style.display = "block";
+    messageDiv.innerHTML = message;
+    messageDiv.style.opacity = 1;
+    setTimeout(() => {
+        messageDiv.style.opacity = 0;
+    }, 5000);
+}
 
- function showMessage(message, divId){
-    var messageDiv=document.getElementById(divId);
-    messageDiv.style.display="block";
-    messageDiv.innerHTML=message;
-    messageDiv.style.opacity=1;
-    setTimeout(function(){
-        messageDiv.style.opacity=0;
-    },5000);
- }
- const signUp=document.getElementById('submitSignUp');
- signUp.addEventListener('click', (event)=>{
+// Sign Up with Email and Password
+const signUp = document.getElementById('submitSignUp');
+signUp.addEventListener('click', (event) => {
     event.preventDefault();
-    const email=document.getElementById('rEmail').value;
-    const password=document.getElementById('rPassword').value;
-    const firstName=document.getElementById('fName').value;
-    const lastName=document.getElementById('lName').value;
-
-    const auth=getAuth();
-    const db=getFirestore();
+    const email = document.getElementById('rEmail').value;
+    const password = document.getElementById('rPassword').value;
+    const firstName = document.getElementById('fName').value;
+    const lastName = document.getElementById('lName').value;
 
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential)=>{
-        const user=userCredential.user;
-        const userData={
+    .then((userCredential) => {
+        const user = userCredential.user;
+        const userData = {
             email: email,
             firstName: firstName,
-            lastName:lastName
+            lastName: lastName
         };
         showMessage('Account Created Successfully', 'signUpMessage');
-        const docRef=doc(db, "users", user.uid);
-        setDoc(docRef,userData)
-        .then(()=>{
-            window.location.href='index.html';
+        const docRef = doc(db, "users", user.uid);
+        setDoc(docRef, userData)
+        .then(() => {
+            window.location.href = 'homepage.html';
         })
-        .catch((error)=>{
-            console.error("error writing document", error);
-
+        .catch((error) => {
+            console.error("Error writing document", error);
         });
     })
-    .catch((error)=>{
-        const errorCode=error.code;
-        if(errorCode=='auth/email-already-in-use'){
-            showMessage('Email Address Already Exists !!!', 'signUpMessage');
+    .catch((error) => {
+        const errorCode = error.code;
+        if (errorCode === 'auth/email-already-in-use') {
+            showMessage('Email Address Already Exists!', 'signUpMessage');
+        } else {
+            showMessage('Unable to Create User', 'signUpMessage');
         }
-        else{
-            showMessage('unable to create User', 'signUpMessage');
-        }
-    })
- });
+    });
+});
 
- const signIn=document.getElementById('submitSignIn');
- signIn.addEventListener('click', (event)=>{
+// Sign In with Email and Password
+const signIn = document.getElementById('submitSignIn');
+signIn.addEventListener('click', (event) => {
     event.preventDefault();
-    const email=document.getElementById('email').value;
-    const password=document.getElementById('password').value;
-    const auth=getAuth();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-    signInWithEmailAndPassword(auth, email,password)
-    .then((userCredential)=>{
-        showMessage('login is successful', 'signInMessage');
-        const user=userCredential.user;
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        showMessage('Login Successful', 'signInMessage');
+        const user = userCredential.user;
         localStorage.setItem('loggedInUserId', user.uid);
-        window.location.href='homepage.html';
+        window.location.href = 'homepage.html';
     })
-    .catch((error)=>{
-        const errorCode=error.code;
-        if(errorCode==='auth/invalid-credential'){
+    .catch((error) => {
+        const errorCode = error.code;
+        if (errorCode === 'auth/invalid-credential') {
             showMessage('Incorrect Email or Password', 'signInMessage');
+        } else {
+            showMessage('Account Does Not Exist', 'signInMessage');
         }
-        else{
-            showMessage('Account does not Exist', 'signInMessage');
-        }
+    });
+});
+
+// Recover Password
+const recoverPassword = document.getElementById('recoverPassword');
+recoverPassword.addEventListener('click', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+
+    if (email) {
+        sendPasswordResetEmail(auth, email)
+        .then(() => {
+            showMessage('Password reset email sent!', 'signInMessage');
+        })
+        .catch((error) => {
+            showMessage('Error sending password reset email.', 'signInMessage');
+        });
+    } else {
+        showMessage('Please enter your email address.', 'signInMessage');
+    }
+});
+
+// Sign In with Google
+const handleGoogleSignIn = () => {
+    signInWithPopup(auth, googleProvider)
+    .then((result) => {
+        const user = result.user;
+        const userData = {
+            email: user.email,
+            firstName: user.displayName.split(' ')[0],
+            lastName: user.displayName.split(' ')[1] || ''
+        };
+        const docRef = doc(db, "users", user.uid);
+        getDoc(docRef)
+        .then((docSnap) => {
+            if (docSnap.exists()) {
+                showMessage('Account already exists!', 'signInMessage');
+            } else {
+                setDoc(docRef, userData)
+                .then(() => {
+                    localStorage.setItem('loggedInUserId', user.uid);
+                    window.location.href = 'homepage.html';
+                })
+                .catch((error) => {
+                    console.error("Error writing document", error);
+                });
+            }
+        });
     })
- })
+    .catch((error) => {
+        if (error.code === 'auth/account-exists-with-different-credential') {
+            showMessage('Account already exists with a different provider!', 'signInMessage');
+        } else {
+            showMessage('Error signing in with Google', 'signInMessage');
+        }
+    });
+};
+
+// Sign In with Facebook
+const handleFacebookSignIn = () => {
+    signInWithPopup(auth, facebookProvider)
+    .then((result) => {
+        const user = result.user;
+        const userData = {
+            email: user.email,
+            firstName: user.displayName.split(' ')[0],
+            lastName: user.displayName.split(' ')[1] || ''
+        };
+        const docRef = doc(db, "users", user.uid);
+        getDoc(docRef)
+        .then((docSnap) => {
+            if (docSnap.exists()) {
+                showMessage('Account already exists!', 'signInMessage');
+            } else {
+                setDoc(docRef, userData)
+                .then(() => {
+                    localStorage.setItem('loggedInUserId', user.uid);
+                    window.location.href = 'homepage.html';
+                })
+                .catch((error) => {
+                    console.error("Error writing document", error);
+                });
+            }
+        });
+    })
+    .catch((error) => {
+        if (error.code === 'auth/account-exists-with-different-credential') {
+            showMessage('Account already exists with a different provider!', 'signInMessage');
+        } else {
+            showMessage('Error signing in with Facebook', 'signInMessage');
+        }
+    });
+};
+
+// Attach Google and Facebook Sign In
+document.getElementById('googleSignIn').addEventListener('click', handleGoogleSignIn);
+document.getElementById('googleSignUp').addEventListener('click', handleGoogleSignIn);
+document.getElementById('facebookSignIn').addEventListener('click', handleFacebookSignIn);
+document.getElementById('facebookSignUp').addEventListener('click', handleFacebookSignIn);
