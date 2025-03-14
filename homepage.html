@@ -15,7 +15,20 @@
             <p><strong>Last Name:</strong> <span id="loggedUserLName"></span></p>
             <p><strong>Email:</strong> <span id="loggedUserEmail"></span></p>
         </div>
-        <button id="logout">Logout</button>
+        <div class="button-group">
+            <button id="logout">Logout</button>
+            <button id="login">Login</button>
+        </div>
     </div>
+    <script>
+        document.getElementById('login').addEventListener('click', () => {
+            window.location.href = 'https://haykal20.github.io/Haykal-Furqan-Shafiq/'; // Update this line
+        });
+
+        document.getElementById('logout').addEventListener('click', () => {
+            localStorage.removeItem('loggedInUserId');
+            window.location.href = 'index.html'; // Update this line
+        });
+    </script>
 </body>
 </html>

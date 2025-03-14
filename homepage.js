@@ -45,9 +45,15 @@ logoutButton.addEventListener('click', () => {
     signOut(auth)
     .then(() => {
         localStorage.removeItem('loggedInUserId');
-        window.location.href = 'index.html';
+        window.location.href = 'index.html'; // Update this line
     })
     .catch((error) => {
         console.error('Error signing out:', error);
     });
+});
+
+// Remove the login button event listener
+const loginButton = document.getElementById('login');
+loginButton.removeEventListener('click', () => {
+    window.location.href = 'https://haykal20.github.io/Haykal-Furqan-Shafiq/'; // Update this line
 });
