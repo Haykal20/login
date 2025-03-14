@@ -38,8 +38,14 @@ signUp.addEventListener('click', (event) => {
     event.preventDefault();
     const email = document.getElementById('rEmail').value;
     const password = document.getElementById('rPassword').value;
+    const confirmPassword = document.getElementById('rConfirmPassword').value;
     const firstName = document.getElementById('fName').value;
     const lastName = document.getElementById('lName').value;
+
+    if (password !== confirmPassword) {
+        showMessage('Passwords do not match!', 'signUpMessage');
+        return;
+    }
 
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -53,7 +59,8 @@ signUp.addEventListener('click', (event) => {
         const docRef = doc(db, "users", user.uid);
         setDoc(docRef, userData)
         .then(() => {
-            window.location.href = 'homepage.html';
+            // Redirect to login page instead of homepage
+            window.location.href = 'index.html';
         })
         .catch((error) => {
             console.error("Error writing document", error);
