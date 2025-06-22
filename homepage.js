@@ -55,5 +55,5 @@ logoutButton.addEventListener('click', () => {
 // Remove the login button event listener
 const loginButton = document.getElementById('login');
 loginButton.removeEventListener('click', () => {
-    window.location.href = 'https://haykal20.github.io/Haykal-Furqan-Shafiq/'; // Update this line
+    window.location.href = 'https://web.haykalfs.my.id/'; // Update this line
 });
